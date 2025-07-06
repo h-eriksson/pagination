@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Pagination</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="pagination.css">
+        <script src="../pagination.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div id="pageWrapper" class="grid-wrapper"></div>
+        <div id="pagination"></div>
+        <div id="settings"></div>
+
+        <script defer>
+            document.addEventListener('DOMContentLoaded', function() {
+                let flashCards = [];
+                for (let i = 0; i < 568; i++) { // Just a random number of items for demonstration
+                    flashCards.push({
+                        id: i + 1,
+                        title: `Flash Card`,
+                        content: `Content for flash card ${i + 1}.`,
+                        color: getRandomPastel()
+                    });
+                }
+
+                // Initialize the pagination component
+                const pagination = document.createElement('he-pagination');
+                pagination.totalItems = flashCards.length; // Set total items
+                pagination.itemsPerPage = 12; // Set items per page
+                pagination.edgePages = 2; // Set edge pages
+                pagination.maxVisiblePages = 10; // Set max visible pages
+                pagination.middlePages = 2; // Set middle pages
+                pagination.middlePageGap = 5; // Set middle page gap
+                pagination.navButtons = 2; // Set navigation buttons
+                pagination.jumpButtons = 2; // Set jump buttons
+
+                pagination.addEventListener('pagination-updated', function(event) {
+                    const { currentRange } = event.detail;
+                    const itemsOnPage = flashCards.slice(currentRange.start - 1, currentRange.end);
+                    renderItems(itemsOnPage);
+                });
+                document.getElementById('pagination').appendChild(pagination);
+                createSettingsPanel(pagination);
+
+                // Function to render items on the page
+                function renderItems(items) {
+                    const pageWrapper = document.getElementById('pageWrapper');
+                    pageWrapper.innerHTML = '';
+
+                    const { columns, rows } = getGridDimensions(pagination.itemsPerPage);
+                    pageWrapper.style.display = 'grid';
+                    pageWrapper.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+                    pageWrapper.style.gridTemplateRows = `repeat(${rows}, auto)`;
+                    pageWrapper.style.gap = '1rem';
+                    pageWrapper.style.padding = '1rem';
+
+                    items.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'flashcard';
+                        card.style.setProperty('--card-color', item.color);
+
+                        card.innerHTML = `
+                            <h3>${item.title}</h3>
+                            <div class="card-number">${item.id}</div>
+                            <div class="card-content">${item.content}</div>
+                            <div class="card-color">${item.color}</div>
+                        `;
+
+                        pageWrapper.appendChild(card);
+                    });
+                }
+
+
+                function getRandomPastel() {
+                    const hue = Math.floor(Math.random() * 360);
+                    const saturation = Math.floor(Math.random() * 20) + 30; // 30–50%
+                    const lightness = Math.floor(Math.random() * 20) + 75; // 75–95%
+                    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                }
+
+                function getGridDimensions(itemsPerPage) {
+                    const columns = Math.ceil(Math.sqrt(itemsPerPage));
+                    const rows = Math.ceil(itemsPerPage / columns);
+                    return { columns, rows };
+                }
+
+                function createSettingsPanel(pagination) {
+                    const settings = document.getElementById('settings');
+
+                    const settingsConfig = [
+                        { label: 'Items per page', property: 'itemsPerPage', min: 1, max: 50 },
+                        { label: 'Max visible pages', property: 'maxVisiblePages', min: 1, max: 20 },
+                        { label: 'Edge pages', property: 'edgePages', min: 0, max: 5 },
+                        { label: 'Middle pages', property: 'middlePages', min: 0, max: 5 },
+                        { label: 'Middle pages gap', property: 'middlePageGap', min: 0, max: 20 },
+                        { label: 'Navigation buttons', property: 'navButtons', min: 0, max: 3 },
+                        { label: 'Jump buttons', property: 'jumpButtons', min: 0, max: 3 }
+                    ];
+
+                    const table = document.createElement('table');
+                    const labelCaption = document.createElement('caption');
+                    labelCaption.textContent = 'Settings';
+                    table.appendChild(labelCaption);
+                    
+                    settingsConfig.forEach(({ label, property, min, max }) => {
+                        const tr = document.createElement('tr');
+
+                        const labelTd = document.createElement('td');
+                        labelTd.textContent = label;
+                        tr.appendChild(labelTd);
+
+                        const inputTd = document.createElement('td');
+                        const range = document.createElement('input');
+                        range.type = 'range';
+                        range.min = min;
+                        range.max = max;
+                        range.value = pagination[property];
+                        range.style.width = '150px';
+
+                        const valueDisplay = document.createElement('span');
+                        valueDisplay.textContent = ` ${range.value}`;
+
+                        range.addEventListener('input', () => {
+                            pagination[property] = parseInt(range.value);
+                            valueDisplay.textContent = ` ${range.value}`;
+                        });
+
+                        inputTd.appendChild(range);
+                        inputTd.appendChild(valueDisplay);
+                        tr.appendChild(inputTd);
+
+                        table.appendChild(tr);
+                    });
+
+                    settings.appendChild(table);
+                }
+
+
+            });
+        </script>
+    </body>
+</html>
