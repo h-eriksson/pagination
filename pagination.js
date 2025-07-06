@@ -287,6 +287,9 @@ class Pagination extends HTMLElement {
         }
         this.prevButton.dataset.state = value;
         this.nextButton.dataset.state = value;
+        if(this.#isInitialized) {
+            this.updatePagination();
+        }
     }
 
     get jumpButtons() {
@@ -298,6 +301,9 @@ class Pagination extends HTMLElement {
         }
         this.firstButton.dataset.state = value;
         this.lastButton.dataset.state = value;
+        if(this.#isInitialized) {
+            this.updatePagination();
+        }
     }
 
     updatePagination() {
