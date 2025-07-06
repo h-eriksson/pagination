@@ -116,12 +116,27 @@ pagination.addEventListener('pagination-updated', (e) => {
   console.log('Current range:', e.detail.currentRange);
 });
 ```
+The element doesn't control any content from the page itself. It only gives the range of an array-index (based on count, so based-1, not based-0) for the page to slice and display.  
+See `example` for a demonstration of this.
 
 ## 🎨 Styling
-The component uses a `--font-size` CSS variable to scale all UI elements:
+The component uses a a few styling CSS-variables:
+
+|CSS-variable|Default value|
+|---|---|
+|--he-font-family|Arial, sans-serif|
+|--he-font-size|0.7rem|
+|--he-color|#000|
+|--he-color-disabled|#aaa|
+|--he-bg|#eee|
+|--he-border|1px solid #ccc|
+|--he-border-radius|0|
+
+**Exmple**
 ```javascript
 he-pagination {
-  --font-size: 0.9rem;
+  --he-font-family: system-ui, sans-serif;
+  --he-font-size: 0.9rem;
 }
 ```
 #### Additional classes:
@@ -131,7 +146,10 @@ he-pagination {
 You can override styles by applying your own rules or by editing the source if needed.
 
 ## ✨ AI Disclosure
-AI used for **minor** refactoring, attribute-naming and workflow. 
+AI used for **minor** refactoring, attribute-naming suggestions and logical flow.  
+The element was all planned out by me, and the large majority of the codebase is written by me, but I'm very bad at naming things. I also sometimes I find my code too clunky, so I ask an AI for feedback and pseudo-code, not copy-paste code solutions.  
+However, AI contributed about half the code for the example-code included. I just wanted a quick and dirty playground.  
+Also, most of this document, because who the hell knows how to format an .md-file of the top of their head 😆.
 
 ## 📦 License
 MIT License
