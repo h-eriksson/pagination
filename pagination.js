@@ -64,7 +64,7 @@
 
 class Pagination extends HTMLElement {
     static get observedAttributes() {
-        return ['total-items', 'items-per-page', 'edge-pages', 'current-item', 'max-visible-pages', 'middle-pages', 'nav-buttons', 'jump-buttons'];
+        return ['total-items', 'items-per-page', 'edge-pages', 'current-item', 'max-visible-pages', 'middle-pages', 'middle-page-gap', 'nav-buttons', 'jump-buttons'];
     }
 
     #currentItem;
@@ -73,6 +73,7 @@ class Pagination extends HTMLElement {
     #itemsPerPage;
     #maxVisiblePages;
     #middlePages;
+    #middlePageGap;
     #navButtons;
     #jumpButtons;
     #isInitialized;
@@ -170,13 +171,14 @@ class Pagination extends HTMLElement {
         });
 
         this.#isInitialized = false;
-        this.#totalItems = parseInt(this.getAttribute('total-items')) || 0;
+        this.#totalItems = parseInt(this.getAttribute('total-items')) || 0; // Required > 0 for element to be displayed.
         this.#itemsPerPage = parseInt(this.getAttribute('items-per-page')) || 10;
         this.#edgePages = parseInt(this.getAttribute('edge-pages')) || 0;
         this.#maxVisiblePages = parseInt(this.getAttribute('max-visible-pages')) || 10;
         this.#middlePages = parseInt(this.getAttribute('middle-pages')) || 0;
-        this.#navButtons = parseInt(this.getAttribute('nav-buttons')) || 2; // Default to 2 if not set
-        this.#jumpButtons = parseInt(this.getAttribute('jump-buttons')) || 2; // Default to 2 if not set
+        this.#middlePageGap = parseInt(this.getAttribute('middle-page-gap')) || 5;
+        this.#navButtons = parseInt(this.getAttribute('nav-buttons')) || 2;
+        this.#jumpButtons = parseInt(this.getAttribute('jump-buttons')) || 2;
         this.#currentItem = 1;
     }
 
@@ -257,6 +259,19 @@ class Pagination extends HTMLElement {
             throw new Error('Middle pages must be a non-negative integer.');
         }
         this.#middlePages = value;
+        if(this.#isInitialized) {
+            this.updatePagination();
+        }
+    }
+
+    get middlePageGap() {
+        return this.#middlePageGap || 0; // Default to 0 if not set
+    }
+    set middlePageGap(value) {
+        if (value < 0) {
+            throw new Error('Middle page gap must be a non-negative integer.');
+        }
+        this.#middlePageGap = value;
         if(this.#isInitialized) {
             this.updatePagination();
         }
@@ -438,7 +453,7 @@ class Pagination extends HTMLElement {
 
         // --- Middle Low Pages ---
         const gapLow = startPage - leftAnchor - 1;
-        if (gapLow > 5) {
+        if (gapLow > this.#middlePageGap) {
             const midStart = leftAnchor + Math.floor((gapLow - this.#middlePages) / 2) + 1;
             const midEnd = Math.min(midStart + this.#middlePages - 1, startPage - 1);
             for (let i = midStart; i <= midEnd; i++) {
@@ -448,7 +463,7 @@ class Pagination extends HTMLElement {
 
         // --- Middle High Pages ---
         const gapHigh = rightAnchor - endPage - 1;
-        if (gapHigh > 5) {
+        if (gapHigh > this.#middlePageGap) {
             const midStart = endPage + Math.floor((gapHigh - this.#middlePages) / 2) + 1;
             const midEnd = Math.min(midStart + this.#middlePages - 1, rightAnchor - 1);
             for (let i = midStart; i <= midEnd; i++) {
