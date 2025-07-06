@@ -85,7 +85,13 @@ class Pagination extends HTMLElement {
         template.innerHTML = `
             <style>
                 :host {
-                    --font-size: 0.7rem;
+                    --font-family: var(--he-font-family, Arial, sans-serif);
+                    --font-size: var(--he-font-size, 0.7rem);
+                    --color: var(--he-color, #000);
+                    --color-disabled: var(--he-color-disabled, #aaa);
+                    --bg: var(--he-bg, #eee);
+                    --border: var(--he-border, 1px solid #ccc);
+                    --border-radius: var(--he-border-radius, 0);
                 }
 
                 #pages {
@@ -94,18 +100,26 @@ class Pagination extends HTMLElement {
                 }
 
                 .page-button {
+                    font-family: var(--font-family);
+                    background-color: var(--bg);
+                    color: var(--color);
+                    border: var(--border);
+                    border-radius: var(--border-radius);
+                    font-size: var(--font-size);
+                    width: calc(var(--font-size) * 2.2);                    
                     box-sizing: border-box;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    border: 1px solid #ccc;
-                    background-color: #f0f0f0;
                     cursor: pointer;
-                    font-size: var(--font-size);
-                    width: calc(var(--font-size) * 2.2);
                     aspect-ratio: 1;
                     margin: 0;
                     padding: 0;
+
+                    &:disabled {
+                        color: var(--color-disabled);
+                        cursor: not-allowed;
+                    }
                 }
 
                 .ellipsis {
@@ -121,6 +135,11 @@ class Pagination extends HTMLElement {
                     box-sizing: border-box;
                     margin: 0;
                     padding: 0;
+
+                    &:disabled {
+                        color: var(--color-disabled);
+                        cursor: not-allowed;
+                    }
                 }
 
                 .nav-control[data-state="0"] {
