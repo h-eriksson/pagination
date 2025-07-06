@@ -305,7 +305,14 @@ class Pagination extends HTMLElement {
 
         structure.sort((a, b) => a.page - b.page);
 
-        this.#renderPages(structure);
+        if(this.#totalItems > 0){
+            this.#renderPages(structure);
+        } else {
+            const navControls = this.shadowRoot.querySelectorAll('.nav-control');
+            navControls.forEach(control => {
+                control.style.display = 'none';
+            });
+        }
 
         const previousRange = this.getRangeFromPage(this.getPageFromItemIndex(this.#currentItem - this.#itemsPerPage));
         const nextRange = this.getRangeFromPage(this.getPageFromItemIndex(this.#currentItem + this.#itemsPerPage));
