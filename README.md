@@ -44,6 +44,8 @@ Example with all nav controls, edge-pages and middle pages.
 </he-pagination>
 ```
 ## 📤 Usage & Integration
+See ``examples`` for a working demonstration.
+
 ```javascript
 const fullItemArray = [{item1}, {items2}, ...]; //List of all items to be paginated.
 
