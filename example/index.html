@@ -81,7 +81,6 @@
                     });
                 }
 
-
                 function getRandomPastel() {
                     const hue = Math.floor(Math.random() * 360);
                     const saturation = Math.floor(Math.random() * 20) + 30; // 30–50%
@@ -112,7 +111,7 @@
                     const labelCaption = document.createElement('caption');
                     labelCaption.textContent = 'Settings';
                     table.appendChild(labelCaption);
-                    
+
                     settingsConfig.forEach(({ label, property, min, max }) => {
                         const tr = document.createElement('tr');
 
@@ -145,8 +144,6 @@
 
                     settings.appendChild(table);
                 }
-
-
             });
         </script>
     </body>
