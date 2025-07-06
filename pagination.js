@@ -39,6 +39,15 @@
  * - navButtons, jumpButtons (same rules as attributes)
  * - totalPages (read-only)
  * 
+ * CSS Custom Properties:   Default:
+ * - --he-font-family:      system-ui, sans-serif
+ * - --he-font-size:        1rem
+ * - --he-border:           1px solid #ccc
+ * - --he-color:            #000
+ * - --he-color-disabled:   #aaa
+ * - --he-bg:               #eee
+ * - --he-border-radius:    0
+ * 
  * Events:
  * - pagination-updated: Dispatched with detail:
  *   {
