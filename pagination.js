@@ -30,6 +30,7 @@
  * - max-visible-pages:  Max page buttons in the main window (default: 10)
  * - edge-pages:         Number of edge page buttons (default: 0)
  * - middle-pages:       Number of mid-gap page buttons (default: 0)
+ * - middle-page-gap:    Number of pages to skip before showing middle page buttons (default: 5)
  * - nav-buttons:        0–3 (prev/next display mode, default: 2)
  * - jump-buttons:       0–3 (first/last display mode, default: 2)
  * 
