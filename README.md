@@ -65,8 +65,16 @@ pagination.addEventListener('pagination-updated', (e) => {
 |max-visible-pages|10|Max number of buttons in the central window|
 |edge-pages|0|Number of page buttons fixed to start/end|
 |middle-pages|0|Number of "mid-gap" page buttons|
+|middle-page-gap|5|The gap required for middle pages to be shown|
 |nav-buttons|2|Controls previous/next buttons|
 |jump-buttons|2|Controls first/last buttons (same behavior as above)|
+
+### edge-pages
+When set to a positive integer, will show the edge-pages of the entire list, for example 1 and 2 for the start of the pages.
+Ellipsis will be shown where there is a gap between the edges and the windowed list.
+
+### middle-pages
+If set to > 0, will show up when there is a gap of middle-page-gap between the windowed list and the start/end or edge-pages. 
 
 #### nav-buttons and jump-buttons states:
 
